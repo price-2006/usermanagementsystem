@@ -1,0 +1,65 @@
+<section class="registration-card">
+  <div class="registration-card__intro">
+    <h2>User Registration</h2>
+  </div>
+
+  <form class="registration-form" [formGroup]="registrationForm" (ngSubmit)="submit()">
+    <div class="field">
+      <label for="fullName">Full Name</label>
+      <input id="fullName" type="text" formControlName="fullName" />
+      <small *ngIf="hasError('fullName', 'required')">Full Name is required.</small>
+    </div>
+
+    <div class="field"> 
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" />
+      <small *ngIf="hasError('email', 'required')">Email is required.</small>
+      <small *ngIf="hasError('email', 'email')">Enter a valid email address.</small>
+    </div>
+
+    <div class="field">
+      <label for="mobile">Mobile Number</label>
+      <input id="mobile" type="text" maxlength="10" formControlName="mobile" />
+      <small *ngIf="hasError('mobile', 'required')">Mobile Number is required.</small>
+      <small *ngIf="hasError('mobile', 'pattern')">Mobile Number must be exactly 10 digits.</small>
+    </div>
+
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password" type="password" formControlName="password" />
+      <small *ngIf="hasError('password', 'required')">Password is required.</small>
+      <small *ngIf="hasError('password', 'minlength')">Password must be at least 8 characters.</small>
+    </div>
+
+    <div class="field">
+      <label for="confirmPassword">Confirm Password</label>
+      <input id="confirmPassword" type="password" formControlName="confirmPassword" />
+      <small *ngIf="hasError('confirmPassword', 'required')">Confirm Password is required.</small>
+      <small *ngIf="passwordMismatch">Confirm Password must match Password.</small>
+    </div>
+
+    <div class="field">
+      <label for="gender">Gender</label>
+      <select id="gender" formControlName="gender">
+        <option value="">Select gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+      <small *ngIf="hasError('gender', 'required')">Gender is required.</small>
+    </div>
+
+    <div class="field field--full">
+      <label for="address">Address</label>
+      <textarea id="address" rows="4" formControlName="address"></textarea>
+      <small *ngIf="hasError('address', 'required')">Address is required.</small>
+    </div>
+
+    <div class="actions field--full">
+      <button type="submit">Register User</button>
+    </div>
+
+    <p class="feedback feedback--error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    <p class="feedback feedback--success" *ngIf="successMessage">{{ successMessage }}</p>
+  </form>
+</section>
