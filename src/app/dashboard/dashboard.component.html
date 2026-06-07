@@ -1,0 +1,78 @@
+<section class="dashboard-container">
+  <aside class="sidebar">
+    <div class="sidebar__header">
+      <h2>System Menu</h2>
+    </div>
+    <ul class="sidebar__nav">
+      <li 
+        [class.active]="activeMenu === 'dashboard'" 
+        (click)="setMenu('dashboard')">
+        Dashboard
+      </li>
+      <li 
+        [class.active]="activeMenu === 'users'" 
+        (click)="setMenu('users')">
+        User Management
+      </li>
+      <li class="logout-item" (click)="logout()">
+        Logout
+      </li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <div *ngIf="activeMenu === 'dashboard'" class="content-panel">
+      <div class="panel-header">
+        <h2>Dashboard Overview</h2>
+      </div>
+      <div class="panel-body">
+        <p>Welcome to the dashboard, <strong class="user-highlight">{{ userName }}</strong>!</p>
+        <p>This is the central hub for managing your application.</p>
+        <div class="stats-cards">
+          <div class="stat-card">
+            <h3>Total Users</h3>
+            <p class="stat-number">{{ registeredUsers.length }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="activeMenu === 'users'" class="content-panel">
+      <div class="panel-header user-management-header">
+        <h2>User Management</h2>
+        <div class="search-box">
+          <input 
+            type="text" 
+            placeholder="Search by Name or Email..." 
+            [(ngModel)]="searchQuery"
+          />
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="table-container">
+          <table class="user-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Gender</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of displayedUsers">
+                <td>{{ user.fullName }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.mobile }}</td>
+                <td>{{ user.gender }}</td>
+              </tr>
+              <tr *ngIf="displayedUsers.length === 0">
+                <td colspan="4" class="text-center">No matching users found.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</section>
