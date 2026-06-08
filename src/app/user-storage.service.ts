@@ -42,4 +42,23 @@ export class UserStorageService {
       window.localStorage.setItem(this.storageKey, JSON.stringify(users));
     }
   }
+
+  updateUser(email: string, updatedUser: RegisteredUser): void {
+    const users = this.getUsers();
+    const index = users.findIndex(u => u.email === email);
+    if (index !== -1) {
+      users[index] = updatedUser;
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem(this.storageKey, JSON.stringify(users));
+      }
+    }
+  }
+
+  deleteUser(email: string): void {
+    let users = this.getUsers();
+    users = users.filter(u => u.email !== email);
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(this.storageKey, JSON.stringify(users));
+    }
+  }
 }

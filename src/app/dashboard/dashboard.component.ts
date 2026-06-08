@@ -19,6 +19,8 @@ export class DashboardComponent implements OnInit {
   activeMenu: 'dashboard' | 'users' = 'dashboard';
   registeredUsers: RegisteredUser[] = [];
   searchQuery = '';
+  editingUserEmail: string | null = null;
+  editFormData: Partial<RegisteredUser> = {};
 
   get displayedUsers(): RegisteredUser[] {
     if (!this.searchQuery.trim()) {
@@ -42,7 +44,37 @@ export class DashboardComponent implements OnInit {
     this.activeMenu = menu;
   }
 
+  editUser(user: RegisteredUser) {
+    this.editingUserEmail = user.email;
+    this.editFormData = { ...user };
+  }
+
+  saveEdit() {
+    if (this.editingUserEmail && this.editFormData.email) {
+      this.userStorage.updateUser(this.editingUserEmail, this.editFormData as RegisteredUser);
+      this.editingUserEmail = null;
+      this.editFormData = {};
+      this.registeredUsers = this.userStorage.getUsers();
+    }
+  }
+
+  cancelEdit() {
+    this.editingUserEmail = null;
+    this.editFormData = {};
+  }
+
+  deleteUser(user: RegisteredUser) {
+    if (window.confirm('Are you sure you want to delete?')) {
+      this.userStorage.deleteUser(user.email);
+      this.registeredUsers = this.userStorage.getUsers();
+    }
+  }
+
   logout(): void {
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem('isLoggedIn');
+      window.localStorage.removeItem('currentUser');
+    }
     this.router.navigate(['/login']);
   }
 }
