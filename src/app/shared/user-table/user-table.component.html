@@ -1,0 +1,59 @@
+<div class="table-container">
+  <table class="user-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Mobile</th>
+        <th>Gender</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.fullName }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.mobile }}</td>
+        <td>{{ user.gender }}</td>
+        <td class="action-cells">
+          <button class="btn-edit" (click)="editUser.emit(user)">Edit</button>
+          <button class="btn-delete" (click)="deleteUser.emit(user)">Delete</button>
+        </td>
+      </tr>
+      <tr *ngIf="users.length === 0">
+        <td colspan="5" class="text-center">No matching users found.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Pagination Controls -->
+<div class="pagination-bar" *ngIf="filteredCount > 0">
+  <span class="pagination-info">
+    Showing {{ (currentPage - 1) * pageSize + 1 }}–{{ currentPage * pageSize > filteredCount ? filteredCount : currentPage * pageSize }} of {{ filteredCount }} users
+  </span>
+  <div class="pagination-controls">
+    <button
+      class="page-btn page-nav"
+      (click)="prevPage.emit()"
+      [disabled]="currentPage === 1"
+      aria-label="Previous page">
+      &#8592;
+    </button>
+    <button
+      *ngFor="let page of pageNumbers"
+      class="page-btn"
+      [class.active]="page === currentPage"
+      (click)="pageChange.emit(page)"
+      [attr.aria-label]="'Page ' + page">
+      {{ page }}
+    </button>
+    <button
+      class="page-btn page-nav"
+      (click)="nextPage.emit()"
+      [disabled]="currentPage === totalPages"
+      aria-label="Next page">
+      &#8594;
+    </button>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="modal-overlay" *ngIf="user">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Edit User</h2>
+      <button class="btn-close" (click)="onCancel()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" [(ngModel)]="formData.fullName" />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="formData.email" />
+      </div>
+      <div class="form-group">
+        <label>Mobile</label>
+        <input type="text" [(ngModel)]="formData.mobile" />
+      </div>
+      <div class="form-group">
+        <label>Gender</label>
+        <select [(ngModel)]="formData.gender">
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Address</label>
+        <textarea [(ngModel)]="formData.address"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="text" [(ngModel)]="formData.password" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="onCancel()">Cancel</button>
+      <button class="btn-primary" (click)="onSave()">Save Changes</button>
+    </div>
+  </div>
+</div>
