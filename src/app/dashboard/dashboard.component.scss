@@ -16,29 +16,31 @@
   max-width: 1200px;
   height: 80vh;
   min-height: 600px;
-  background: rgba(15, 23, 42, 0.95);
-  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .sidebar {
   width: 260px;
-  background: rgba(15, 23, 42, 0.98);
-  border-right: 1px solid rgba(148, 163, 184, 0.2);
+  background: var(--surface-sidebar);
+  border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
+  transition: background 0.3s ease;
 }
 
 .sidebar__header {
   padding: 2.5rem 2rem 2rem;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .sidebar__header h2 {
   margin: 0;
-  color: #fbbf24;
+  color: var(--accent-gold);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-size: 0.9rem;
@@ -56,7 +58,7 @@
 
 .sidebar__nav li {
   padding: 1rem 2rem;
-  color: #cbd5e1;
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
   font-weight: 500;
@@ -66,18 +68,18 @@
 
 .sidebar__nav li:hover {
   background: rgba(59, 130, 246, 0.1);
-  color: #e2e8f0;
+  color: var(--text-primary);
 }
 
 .sidebar__nav li.active {
   background: rgba(59, 130, 246, 0.15);
-  color: #60a5fa;
-  border-left: 4px solid #3b82f6;
+  color: var(--accent-blue-light);
+  border-left: 4px solid var(--accent-blue);
 }
 
 .sidebar__nav .logout-item {
   margin-top: auto;
-  border-top: 1px solid rgba(148, 163, 184, 0.1);
+  border-top: 1px solid var(--border-subtle);
   color: #f87171;
   border-left: 4px solid transparent;
 }
@@ -85,6 +87,13 @@
 .sidebar__nav .logout-item:hover {
   background: rgba(239, 68, 68, 0.1);
   color: #fca5a5;
+}
+
+/* Topbar row for theme toggle */
+.sidebar__topbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 1.2rem 0;
 }
 
 .main-content {
@@ -103,30 +112,30 @@
 
 .panel-header {
   padding: 2.5rem 2.5rem 1.5rem;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .panel-header h2 {
   margin: 0;
   font-size: 2rem;
-  color: #f8fafc;
+  color: var(--text-primary);
 }
 
 .panel-body {
   padding: 2.5rem;
-  color: #e2e8f0;
+  color: var(--text-primary);
   flex: 1;
 }
 
 .panel-body p {
   font-size: 1.05rem;
   line-height: 1.6;
-  color: #94a3b8;
+  color: var(--text-muted);
   margin: 0 0 1rem;
 }
 
 .user-highlight {
-  color: #f8fafc;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
@@ -138,13 +147,13 @@
 }
 
 .stat-card {
-  background: rgba(15, 23, 42, 0.6);
+  background: var(--surface-2);
   border: 1px solid rgba(59, 130, 246, 0.3);
   border-radius: 12px;
   padding: 1.8rem;
   width: 220px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
+  box-shadow: var(--shadow-stat);
+  transition: transform 0.2s ease, background 0.3s ease;
 }
 
 .stat-card:hover {
@@ -156,14 +165,14 @@
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #94a3b8;
+  color: var(--text-muted);
 }
 
 .stat-number {
   margin: 0;
   font-size: 3rem;
   font-weight: 700;
-  color: #60a5fa;
+  color: var(--accent-blue-light);
 }
 
 /* User Management Header */

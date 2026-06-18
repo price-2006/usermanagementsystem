@@ -5,11 +5,12 @@ import { UserStorageService, RegisteredUser } from '../user-storage.service';
 import { SearchBarComponent } from '../shared/search-bar/search-bar.component';
 import { UserTableComponent } from '../shared/user-table/user-table.component';
 import { UserFormModalComponent } from '../shared/user-form-modal/user-form-modal.component';
+import { ThemeToggleComponent } from '../shared/theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, SearchBarComponent, UserTableComponent, UserFormModalComponent],
+  imports: [CommonModule, SearchBarComponent, UserTableComponent, UserFormModalComponent, ThemeToggleComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })

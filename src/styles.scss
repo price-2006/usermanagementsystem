@@ -1,1 +1,100 @@
-/* You can add global styles to this file, and also import other style files */
+/* =====================================================================
+   Global CSS Design Tokens — dark mode is the default
+   Light mode activates when body has class="light"
+   ===================================================================== */
+
+:root {
+  /* Backgrounds */
+  --bg-base:      #0f172a;
+  --bg-gradient:
+    radial-gradient(circle at top left,  rgba(245, 158, 11, 0.14), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.14), transparent 28%),
+    #0f172a;
+
+  /* Surfaces (cards, panels, sidebar) */
+  --surface-1:    rgba(15, 23, 42, 0.95);
+  --surface-2:    rgba(15, 23, 42, 0.6);
+  --surface-3:    rgba(30, 41, 59, 0.9);
+  --surface-sidebar: rgba(15, 23, 42, 0.98);
+  --surface-input: rgba(15, 23, 42, 0.95);
+
+  /* Text */
+  --text-primary:   #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted:     #94a3b8;
+  --text-dim:       #64748b;
+
+  /* Borders */
+  --border:         rgba(148, 163, 184, 0.2);
+  --border-subtle:  rgba(148, 163, 184, 0.1);
+  --border-input:   rgba(148, 163, 184, 0.3);
+
+  /* Accent */
+  --accent-gold:    #fbbf24;
+  --accent-gold-hover: #f59e0b;
+  --accent-blue:    #3b82f6;
+  --accent-blue-hover: #2563eb;
+  --accent-blue-light: #60a5fa;
+
+  /* Shadows */
+  --shadow-card:    0 20px 40px rgba(0, 0, 0, 0.3);
+  --shadow-stat:    0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-modal:   0 25px 50px -12px rgba(0, 0, 0, 0.5);
+
+  /* Table header */
+  --table-header-bg: rgba(15, 23, 42, 0.9);
+}
+
+/* =====================================================================
+   LIGHT MODE OVERRIDES
+   ===================================================================== */
+body.light {
+  --bg-base:      #f1f5f9;
+  --bg-gradient:
+    radial-gradient(circle at top left,  rgba(245, 158, 11, 0.08), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.08), transparent 28%),
+    #f1f5f9;
+
+  --surface-1:    rgba(255, 255, 255, 0.97);
+  --surface-2:    rgba(241, 245, 249, 0.8);
+  --surface-3:    rgba(226, 232, 240, 0.9);
+  --surface-sidebar: rgba(248, 250, 252, 0.98);
+  --surface-input: rgba(255, 255, 255, 0.97);
+
+  --text-primary:   #0f172a;
+  --text-secondary: #334155;
+  --text-muted:     #475569;
+  --text-dim:       #94a3b8;
+
+  --border:         rgba(100, 116, 139, 0.25);
+  --border-subtle:  rgba(100, 116, 139, 0.15);
+  --border-input:   rgba(100, 116, 139, 0.3);
+
+  --shadow-card:    0 20px 40px rgba(0, 0, 0, 0.08);
+  --shadow-stat:    0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-modal:   0 25px 50px -12px rgba(0, 0, 0, 0.15);
+
+  --table-header-bg: rgba(241, 245, 249, 0.97);
+}
+
+/* =====================================================================
+   Base reset applied once globally
+   ===================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+}
+
+body {
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+  font-family: Inter, 'Segoe UI', sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
+}

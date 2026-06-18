@@ -4,10 +4,8 @@
   min-height: 100dvh;
   margin: 0;
   padding: 0;
-  background:
-    radial-gradient(circle at top left, rgba(245, 158, 11, 0.14), transparent 34%),
-    radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.14), transparent 28%),
-    #0f172a;
-  color: #e2e8f0;
-  font-family: Inter, "Segoe UI", sans-serif;
-}
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+  font-family: Inter, 'Segoe UI', sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
+}
