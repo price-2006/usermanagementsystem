@@ -1,3 +1,7 @@
+/* =====================================================================
+   Dashboard — base styles (Desktop ≥ 1024px)
+   ===================================================================== */
+
 :host {
   display: flex;
   flex: 1;
@@ -31,6 +35,7 @@
   display: flex;
   flex-direction: column;
   transition: background 0.3s ease;
+  flex-shrink: 0;
 }
 
 .sidebar__header {
@@ -102,6 +107,7 @@
   flex-direction: column;
   background: transparent;
   overflow-y: auto;
+  min-width: 0;
 }
 
 .content-panel {
@@ -125,6 +131,7 @@
   padding: 2.5rem;
   color: var(--text-primary);
   flex: 1;
+  overflow-y: auto;
 }
 
 .panel-body p {
@@ -142,6 +149,7 @@
 /* Dashboard Stats */
 .stats-cards {
   display: flex;
+  flex-wrap: wrap;
   gap: 1.5rem;
   margin-top: 2rem;
 }
@@ -151,7 +159,8 @@
   border: 1px solid rgba(59, 130, 246, 0.3);
   border-radius: 12px;
   padding: 1.8rem;
-  width: 220px;
+  min-width: 180px;
+  flex: 1;
   box-shadow: var(--shadow-stat);
   transition: transform 0.2s ease, background 0.3s ease;
 }
@@ -180,4 +189,157 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* =====================================================================
+   Tablet — 768px to 1023px
+   ===================================================================== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  :host {
+    padding: 1rem;
+  }
+
+  .dashboard-container {
+    height: auto;
+    min-height: 100dvh;
+    border-radius: 12px;
+  }
+
+  .sidebar {
+    width: 200px;
+  }
+
+  .sidebar__header {
+    padding: 1.5rem 1.25rem 1.25rem;
+  }
+
+  .sidebar__nav li {
+    padding: 0.85rem 1.25rem;
+    font-size: 0.9rem;
+  }
+
+  .panel-header {
+    padding: 1.5rem 1.5rem 1rem;
+  }
+
+  .panel-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .panel-body {
+    padding: 1.5rem;
+  }
+}
+
+/* =====================================================================
+   Mobile — < 768px
+   ===================================================================== */
+@media (max-width: 767px) {
+  :host {
+    padding: 0;
+    align-items: flex-start;
+  }
+
+  .dashboard-container {
+    flex-direction: column;
+    height: auto;
+    min-height: 100dvh;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    max-width: 100%;
+  }
+
+  /* --- Sidebar becomes a top nav bar --- */
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    flex-direction: column;
+  }
+
+  .sidebar__topbar {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+    justify-content: flex-end;
+  }
+
+  .sidebar__header {
+    padding: 0.75rem 1rem 0.5rem;
+    border-bottom: none;
+  }
+
+  .sidebar__header h2 {
+    font-size: 0.75rem;
+  }
+
+  .sidebar__nav {
+    flex-direction: row;
+    padding: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    /* hide scrollbar visually */
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  .sidebar__nav li {
+    padding: 0.85rem 1.1rem;
+    white-space: nowrap;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+    font-size: 0.88rem;
+    flex-shrink: 0;
+  }
+
+  .sidebar__nav li:hover {
+    border-left: none;
+    border-bottom: 3px solid rgba(59, 130, 246, 0.3);
+  }
+
+  .sidebar__nav li.active {
+    border-left: none;
+    border-bottom: 3px solid var(--accent-blue);
+    background: rgba(59, 130, 246, 0.1);
+  }
+
+  .sidebar__nav .logout-item {
+    margin-top: 0;
+    margin-left: auto;
+    border-top: none;
+    border-left: none;
+  }
+
+  /* --- Main content --- */
+  .content-panel {
+    height: auto;
+  }
+
+  .panel-header {
+    padding: 1.25rem 1rem 1rem;
+  }
+
+  .panel-header h2 {
+    font-size: 1.35rem;
+  }
+
+  .panel-body {
+    padding: 1rem;
+  }
+
+  .user-management-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .stat-card {
+    min-width: 100%;
+  }
+
+  .stat-number {
+    font-size: 2.25rem;
+  }
 }

@@ -49,3 +49,44 @@ h1 {
   padding: 2rem;
   box-sizing: border-box;
 }
+
+/* =====================================================================
+   Tablet — 768px to 1023px
+   ===================================================================== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .app-shell__header {
+    padding: 1rem 1.5rem 0.75rem;
+  }
+
+  .app-shell__content {
+    padding: 1.5rem;
+  }
+}
+
+/* =====================================================================
+   Mobile — < 768px
+   ===================================================================== */
+@media (max-width: 767px) {
+  .app-shell__header {
+    padding: 0.75rem 1rem 0.75rem;
+  }
+
+  .app-shell__topbar {
+    margin-bottom: 0.5rem;
+  }
+
+  .app-shell__eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+  }
+
+  .app-shell__subtitle {
+    font-size: 0.88rem;
+  }
+
+  .app-shell__content {
+    padding: 1rem;
+    justify-content: flex-start;
+    padding-top: 1.5rem;
+  }
+}

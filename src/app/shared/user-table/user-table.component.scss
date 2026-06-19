@@ -6,10 +6,12 @@
   border: 1px solid var(--border);
   background: var(--surface-2);
   transition: background 0.3s ease, border-color 0.3s ease;
+  -webkit-overflow-scrolling: touch;
 }
 
 .user-table {
   width: 100%;
+  min-width: 540px; /* ensures table scrolls horizontally on mobile rather than squishing */
   border-collapse: collapse;
   text-align: left;
 }
@@ -91,6 +93,8 @@
   margin-top: 1.5rem;
   padding: 0.75rem 0.5rem 0;
   border-top: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 .pagination-info {
@@ -102,6 +106,7 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  flex-wrap: wrap;
 }
 
 .page-btn {
@@ -141,4 +146,38 @@
 
 .page-nav {
   font-size: 1rem;
+}
+
+/* =====================================================================
+   Tablet — 768px to 1023px
+   ===================================================================== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .user-table th, .user-table td {
+    padding: 0.9rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* =====================================================================
+   Mobile — < 768px
+   ===================================================================== */
+@media (max-width: 767px) {
+  .user-table th, .user-table td {
+    padding: 0.75rem 0.85rem;
+    font-size: 0.85rem;
+  }
+
+  .btn-edit, .btn-delete {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.78rem;
+  }
+
+  .pagination-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pagination-info {
+    font-size: 0.8rem;
+  }
 }

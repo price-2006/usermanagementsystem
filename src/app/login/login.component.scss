@@ -157,3 +157,51 @@ button:hover {
   color: var(--accent-gold-hover);
   text-decoration: underline;
 }
+
+/* =====================================================================
+   Tablet — 768px to 1023px
+   ===================================================================== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .login-card {
+    padding: 2.5rem 1.75rem;
+    max-width: 640px;
+  }
+}
+
+/* =====================================================================
+   Mobile — < 768px
+   ===================================================================== */
+@media (max-width: 767px) {
+  .login-card {
+    padding: 1.5rem 1rem;
+    border-radius: 12px;
+    box-shadow: none;
+    border-color: var(--border-subtle);
+  }
+
+  .login-card__intro {
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .login-form {
+    gap: 1.1rem;
+  }
+
+  input,
+  select,
+  textarea {
+    padding: 0.8rem 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  button {
+    width: 100%;
+    padding: 0.9rem 1.5rem;
+  }
+}
