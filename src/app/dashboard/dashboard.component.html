@@ -84,3 +84,13 @@
   (save)="onSaveEdit($event)"
   (cancel)="onCancelEdit()">
 </app-user-form-modal>
+
+<!-- Confirm Delete Modal -->
+<app-confirm-modal
+  [visible]="showConfirm"
+  title="Delete User"
+  [message]="'Are you sure you want to delete ' + (pendingDeleteUser?.fullName ?? 'this user') + '? This action cannot be undone.'"
+  confirmLabel="Delete"
+  (confirmed)="onConfirmDelete()"
+  (cancelled)="onCancelDelete()">
+</app-confirm-modal>

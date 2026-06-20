@@ -5,12 +5,13 @@ import { UserStorageService, RegisteredUser } from '../user-storage.service';
 import { SearchBarComponent } from '../shared/search-bar/search-bar.component';
 import { UserTableComponent } from '../shared/user-table/user-table.component';
 import { UserFormModalComponent } from '../shared/user-form-modal/user-form-modal.component';
+import { ConfirmModalComponent } from '../shared/confirm-modal/confirm-modal.component';
 import { ThemeToggleComponent } from '../shared/theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, SearchBarComponent, UserTableComponent, UserFormModalComponent, ThemeToggleComponent],
+  imports: [CommonModule, SearchBarComponent, UserTableComponent, UserFormModalComponent, ThemeToggleComponent, ConfirmModalComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -36,6 +37,10 @@ export class DashboardComponent implements OnInit {
 
   // Editing — null means modal is closed
   editingUser: RegisteredUser | null = null;
+
+  // Confirm-delete modal
+  pendingDeleteUser: RegisteredUser | null = null;
+  get showConfirm(): boolean { return this.pendingDeleteUser !== null; }
 
   // ── Computed ──────────────────────────────────────────────────────────────
 
@@ -109,9 +114,18 @@ export class DashboardComponent implements OnInit {
   }
 
   onDeleteUser(user: RegisteredUser): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      this.userStorage.deleteUser(user.email);
+    this.pendingDeleteUser = user;
+  }
+
+  onConfirmDelete(): void {
+    if (this.pendingDeleteUser) {
+      this.userStorage.deleteUser(this.pendingDeleteUser.email);
       this.registeredUsers = this.userStorage.getUsers();
+      this.pendingDeleteUser = null;
     }
+  }
+
+  onCancelDelete(): void {
+    this.pendingDeleteUser = null;
   }
 }
