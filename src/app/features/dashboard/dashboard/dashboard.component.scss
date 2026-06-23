@@ -187,10 +187,54 @@
 /* User Management Header */
 .user-management-header {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+  align-items: flex-start;
   gap: 1rem;
+}
+
+/* Column: search bar on top, Add User button below (right-aligned) */
+.search-action-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.6rem;
+}
+
+/* Add User button */
+.btn-add-user {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  background: linear-gradient(135deg, var(--accent-blue), #6366f1);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.35);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.5);
+    filter: brightness(1.08);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
+  }
+}
+
+.btn-add-user__icon {
+  font-size: 1.2rem;
+  font-weight: 300;
+  line-height: 1;
 }
 
 /* =====================================================================
@@ -333,6 +377,16 @@
   .user-management-header {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .search-action-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-add-user {
+    justify-content: center;
+    width: 100%;
   }
 
   .stat-card {

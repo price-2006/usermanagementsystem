@@ -47,12 +47,18 @@
       <div class="panel-header user-management-header">
         <h2>User Management</h2>
 
-        <!-- Search Component -->
-        <app-search-bar
-          [value]="searchQuery"
-          placeholder="Search by Name or Email..."
-          (valueChange)="searchQuery = $event">
-        </app-search-bar>
+        <!-- Search + Add User row -->
+        <div class="search-action-row">
+          <app-search-bar
+            [value]="searchQuery"
+            placeholder="Search by Name or Email..."
+            (valueChange)="searchQuery = $event">
+          </app-search-bar>
+          <button class="btn-add-user" (click)="openAddUserModal()">
+            <span class="btn-add-user__icon">+</span>
+            Add User
+          </button>
+        </div>
       </div>
 
       <div class="panel-body">
@@ -94,3 +100,10 @@
   (confirmed)="onConfirmDelete()"
   (cancelled)="onCancelDelete()">
 </app-confirm-modal>
+
+<!-- Add User Modal -->
+<app-add-user-modal
+  #addUserModal
+  (save)="onAddUser($event)"
+  (cancel)="onCancelAdd()">
+</app-add-user-modal>

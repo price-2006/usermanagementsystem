@@ -8,6 +8,7 @@ import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
 import { UserTableComponent } from './user-table/user-table.component';
 import { UserFormModalComponent } from './user-form-modal/user-form-modal.component';
 import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
+import { AddUserModalComponent } from './add-user-modal/add-user-modal.component';
 
 /**
  * SharedModule — declares and re-exports all reusable UI components and
@@ -19,7 +20,8 @@ import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
     ThemeToggleComponent,
     UserTableComponent,
     UserFormModalComponent,
-    ConfirmModalComponent
+    ConfirmModalComponent,
+    AddUserModalComponent
   ],
   imports: [
     CommonModule,
@@ -34,6 +36,7 @@ import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
     UserTableComponent,
     UserFormModalComponent,
     ConfirmModalComponent,
+    AddUserModalComponent,
     // Angular modules (re-exported so feature modules don't need to import them again)
     CommonModule,
     FormsModule,

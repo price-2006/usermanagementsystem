@@ -1,6 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserStorageService, RegisteredUser } from '../../../core/services/user-storage.service';
+import { AddUserModalComponent } from '../../../shared/add-user-modal/add-user-modal.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,6 +12,8 @@ import { UserStorageService, RegisteredUser } from '../../../core/services/user-
 export class DashboardComponent implements OnInit {
   private router = inject(Router);
   private userStorage = inject(UserStorageService);
+
+  @ViewChild('addUserModal') addUserModal!: AddUserModalComponent;
 
   userName = 'User';
   activeMenu: 'dashboard' | 'users' = 'dashboard';
@@ -121,4 +124,17 @@ export class DashboardComponent implements OnInit {
   onCancelDelete(): void {
     this.pendingDeleteUser = null;
   }
+
+  // ── Add User ──────────────────────────────────────────────────────────────
+
+  openAddUserModal(): void {
+    this.addUserModal.open();
+  }
+
+  onAddUser(user: RegisteredUser): void {
+    this.userStorage.saveUser(user);
+    this.registeredUsers = this.userStorage.getUsers();
+  }
+
+  onCancelAdd(): void {}
 }

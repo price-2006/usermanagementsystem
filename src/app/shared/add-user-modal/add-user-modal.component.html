@@ -1,0 +1,72 @@
+<div class="modal-overlay" *ngIf="visible">
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <h2>Add New User</h2>
+      <button class="btn-close" (click)="close()">&times;</button>
+    </div>
+
+    <div class="modal-body" [formGroup]="addForm">
+
+      <div class="form-group">
+        <label for="add-fullName">Full Name</label>
+        <input id="add-fullName" type="text" formControlName="fullName" placeholder="Enter full name" />
+        <small *ngIf="hasError('fullName', 'required')">Full Name is required.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="add-email">Email</label>
+        <input id="add-email" type="email" formControlName="email" placeholder="Enter email address" />
+        <small *ngIf="hasError('email', 'required')">Email is required.</small>
+        <small *ngIf="hasError('email', 'email')">Enter a valid email address.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="add-mobile">Mobile Number</label>
+        <input id="add-mobile" type="text" maxlength="10" formControlName="mobile" placeholder="10-digit number" />
+        <small *ngIf="hasError('mobile', 'required')">Mobile Number is required.</small>
+        <small *ngIf="hasError('mobile', 'pattern')">Mobile Number must be exactly 10 digits.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="add-password">Password</label>
+        <input id="add-password" type="password" formControlName="password" placeholder="Min. 8 characters" />
+        <small *ngIf="hasError('password', 'required')">Password is required.</small>
+        <small *ngIf="hasError('password', 'minlength')">Password must be at least 8 characters.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="add-confirmPassword">Confirm Password</label>
+        <input id="add-confirmPassword" type="password" formControlName="confirmPassword" placeholder="Re-enter password" />
+        <small *ngIf="hasError('confirmPassword', 'required')">Confirm Password is required.</small>
+        <small *ngIf="passwordMismatch">Passwords do not match.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="add-gender">Gender</label>
+        <select id="add-gender" formControlName="gender">
+          <option value="">Select gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+        <small *ngIf="hasError('gender', 'required')">Gender is required.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="add-address">Address</label>
+        <textarea id="add-address" rows="3" formControlName="address" placeholder="Enter address"></textarea>
+        <small *ngIf="hasError('address', 'required')">Address is required.</small>
+      </div>
+
+      <p class="feedback--error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="close()">Cancel</button>
+      <button class="btn-primary" (click)="submit()">Add User</button>
+    </div>
+
+  </div>
+</div>
