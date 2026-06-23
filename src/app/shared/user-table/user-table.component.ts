@@ -1,11 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RegisteredUser } from '../../user-storage.service';
+import { RegisteredUser } from '../../core/services/user-storage.service';
 
 @Component({
   selector: 'app-user-table',
-  standalone: true,
-  imports: [CommonModule],
+  standalone: false,
   templateUrl: './user-table.component.html',
   styleUrl: './user-table.component.scss'
 })

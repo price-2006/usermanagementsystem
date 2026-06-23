@@ -1,10 +1,8 @@
-import { Component, signal, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { ThemeToggleComponent } from '../../shared/theme-toggle/theme-toggle.component';
+import { Component, signal } from '@angular/core';
 
 @Component({
   selector: 'app-auth-layout',
-  imports: [RouterOutlet, ThemeToggleComponent],
+  standalone: false,
   template: `
     <main class="app-shell">
       <header class="app-shell__header">

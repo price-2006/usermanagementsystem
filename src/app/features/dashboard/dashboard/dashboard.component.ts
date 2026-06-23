@@ -1,17 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { UserStorageService, RegisteredUser } from '../user-storage.service';
-import { SearchBarComponent } from '../shared/search-bar/search-bar.component';
-import { UserTableComponent } from '../shared/user-table/user-table.component';
-import { UserFormModalComponent } from '../shared/user-form-modal/user-form-modal.component';
-import { ConfirmModalComponent } from '../shared/confirm-modal/confirm-modal.component';
-import { ThemeToggleComponent } from '../shared/theme-toggle/theme-toggle.component';
+import { UserStorageService, RegisteredUser } from '../../../core/services/user-storage.service';
 
 @Component({
   selector: 'app-dashboard',
-  standalone: true,
-  imports: [CommonModule, SearchBarComponent, UserTableComponent, UserFormModalComponent, ThemeToggleComponent, ConfirmModalComponent],
+  standalone: false,
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })

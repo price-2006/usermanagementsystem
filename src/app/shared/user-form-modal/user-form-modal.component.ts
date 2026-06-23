@@ -1,12 +1,9 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { RegisteredUser } from '../../user-storage.service';
+import { RegisteredUser } from '../../core/services/user-storage.service';
 
 @Component({
   selector: 'app-user-form-modal',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
+  standalone: false,
   templateUrl: './user-form-modal.component.html',
   styleUrl: './user-form-modal.component.scss'
 })

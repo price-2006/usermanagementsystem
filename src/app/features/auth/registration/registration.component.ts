@@ -1,8 +1,6 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { RegisteredUser, UserStorageService } from '../user-storage.service';
+import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { RegisteredUser, UserStorageService } from '../../../core/services/user-storage.service';
 
 const passwordsMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const password = control.get('password')?.value;
@@ -17,8 +15,7 @@ const passwordsMatchValidator: ValidatorFn = (control: AbstractControl): Validat
 
 @Component({
   selector: 'app-registration',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  standalone: false,
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.scss'
 })
