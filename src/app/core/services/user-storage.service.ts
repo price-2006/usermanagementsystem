@@ -1,6 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 export interface RegisteredUser {
+  id?: number;
   fullName: string;
   email: string;
   mobile: string;
@@ -13,52 +17,34 @@ export interface RegisteredUser {
   providedIn: 'root'
 })
 export class UserStorageService {
-  private readonly storageKey = 'users';
+  private readonly apiUrl = 'http://localhost:3000/users';
+  private http = inject(HttpClient);
 
-  getUsers(): RegisteredUser[] {
-    if (typeof window === 'undefined') {
-      return [];
-    }
-
-    const rawUsers = window.localStorage.getItem(this.storageKey);
-
-    if (!rawUsers) {
-      return [];
-    }
-
-    try {
-      const parsedUsers = JSON.parse(rawUsers) as RegisteredUser[];
-      return Array.isArray(parsedUsers) ? parsedUsers : [];
-    } catch {
-      return [];
-    }
+  /** GET /users */
+  getUsers(): Observable<RegisteredUser[]> {
+    return this.http.get<RegisteredUser[]>(this.apiUrl).pipe(
+      catchError(err => throwError(() => new Error(err.message || 'Failed to fetch users')))
+    );
   }
 
-  saveUser(user: RegisteredUser): void {
-    const users = this.getUsers();
-    users.push(user);
-
-    if (typeof window !== 'undefined') {
-      window.localStorage.setItem(this.storageKey, JSON.stringify(users));
-    }
+  /** POST /users */
+  saveUser(user: RegisteredUser): Observable<RegisteredUser> {
+    return this.http.post<RegisteredUser>(this.apiUrl, user).pipe(
+      catchError(err => throwError(() => new Error(err.message || 'Failed to save user')))
+    );
   }
 
-  updateUser(email: string, updatedUser: RegisteredUser): void {
-    const users = this.getUsers();
-    const index = users.findIndex(u => u.email === email);
-    if (index !== -1) {
-      users[index] = updatedUser;
-      if (typeof window !== 'undefined') {
-        window.localStorage.setItem(this.storageKey, JSON.stringify(users));
-      }
-    }
+  /** PUT /users/:id */
+  updateUser(id: number, updatedUser: RegisteredUser): Observable<RegisteredUser> {
+    return this.http.put<RegisteredUser>(`${this.apiUrl}/${id}`, updatedUser).pipe(
+      catchError(err => throwError(() => new Error(err.message || 'Failed to update user')))
+    );
   }
 
-  deleteUser(email: string): void {
-    let users = this.getUsers();
-    users = users.filter(u => u.email !== email);
-    if (typeof window !== 'undefined') {
-      window.localStorage.setItem(this.storageKey, JSON.stringify(users));
-    }
+  /** DELETE /users/:id */
+  deleteUser(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+      catchError(err => throwError(() => new Error(err.message || 'Failed to delete user')))
+    );
   }
 }
