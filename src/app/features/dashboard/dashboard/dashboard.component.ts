@@ -2,6 +2,7 @@ import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserStorageService, RegisteredUser } from '../../../core/services/user-storage.service';
 import { AddUserModalComponent } from '../../../shared/add-user-modal/add-user-modal.component';
+import { setAuthenticated } from '../../../core/guards/auth.guard';
 
 @Component({
   selector: 'app-dashboard',
@@ -98,6 +99,7 @@ export class DashboardComponent implements OnInit {
   }
 
   logout(): void {
+    setAuthenticated(false);
     this.router.navigate(['/login']);
   }
 

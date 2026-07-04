@@ -1,4 +1,10 @@
 <section class="dashboard-container">
+
+  <!-- Loading Spinner Overlay -->
+  <div *ngIf="isLoading" class="spinner-overlay">
+    <div class="spinner"></div>
+  </div>
+
   <aside class="sidebar">
     <div class="sidebar__topbar">
       <app-theme-toggle />
@@ -24,6 +30,12 @@
   </aside>
 
   <main class="main-content">
+
+    <!-- Error Banner -->
+    <div *ngIf="errorMessage" class="error-banner">
+      <span class="error-banner__icon">⚠️</span>
+      {{ errorMessage }}
+    </div>
 
     <!-- Dashboard Overview Panel -->
     <div *ngIf="activeMenu === 'dashboard'" class="content-panel">
