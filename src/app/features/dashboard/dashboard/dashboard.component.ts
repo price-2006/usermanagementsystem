@@ -19,12 +19,16 @@ export class DashboardComponent implements OnInit {
   activeMenu: 'dashboard' | 'users' = 'dashboard';
   registeredUsers: RegisteredUser[] = [];
 
+  // Loading & Error
+  isLoading = false;
+  errorMessage = '';
+
   // Search
   private _searchQuery = '';
   get searchQuery(): string { return this._searchQuery; }
   set searchQuery(value: string) {
     this._searchQuery = value;
-    this.currentPage = 1; // reset to first page on every search
+    this.currentPage = 1;
   }
 
   // Pagination
@@ -65,10 +69,26 @@ export class DashboardComponent implements OnInit {
   // ── Lifecycle ─────────────────────────────────────────────────────────────
 
   ngOnInit(): void {
-    this.registeredUsers = this.userStorage.getUsers();
-    if (this.registeredUsers.length > 0) {
-      this.userName = this.registeredUsers[this.registeredUsers.length - 1].fullName;
-    }
+    this.loadUsers();
+  }
+
+  private loadUsers(): void {
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.userStorage.getUsers().subscribe({
+      next: (users) => {
+        this.registeredUsers = users;
+        if (users.length > 0) {
+          this.userName = users[users.length - 1].fullName;
+        }
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.errorMessage = err.message || 'Failed to load users.';
+        this.isLoading = false;
+      }
+    });
   }
 
   // ── Navigation ────────────────────────────────────────────────────────────
@@ -78,10 +98,6 @@ export class DashboardComponent implements OnInit {
   }
 
   logout(): void {
-    if (typeof window !== 'undefined') {
-      window.localStorage.removeItem('isLoggedIn');
-      window.localStorage.removeItem('currentUser');
-    }
     this.router.navigate(['/login']);
   }
 
@@ -98,11 +114,21 @@ export class DashboardComponent implements OnInit {
   }
 
   onSaveEdit(updated: RegisteredUser): void {
-    if (this.editingUser) {
-      this.userStorage.updateUser(this.editingUser.email, updated);
-      this.editingUser = null;
-      this.registeredUsers = this.userStorage.getUsers();
-    }
+    if (!this.editingUser?.id) return;
+
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.userStorage.updateUser(this.editingUser.id, updated).subscribe({
+      next: () => {
+        this.editingUser = null;
+        this.loadUsers();
+      },
+      error: (err) => {
+        this.errorMessage = err.message || 'Failed to update user.';
+        this.isLoading = false;
+      }
+    });
   }
 
   onCancelEdit(): void {
@@ -114,11 +140,21 @@ export class DashboardComponent implements OnInit {
   }
 
   onConfirmDelete(): void {
-    if (this.pendingDeleteUser) {
-      this.userStorage.deleteUser(this.pendingDeleteUser.email);
-      this.registeredUsers = this.userStorage.getUsers();
-      this.pendingDeleteUser = null;
-    }
+    if (!this.pendingDeleteUser?.id) return;
+
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.userStorage.deleteUser(this.pendingDeleteUser.id).subscribe({
+      next: () => {
+        this.pendingDeleteUser = null;
+        this.loadUsers();
+      },
+      error: (err) => {
+        this.errorMessage = err.message || 'Failed to delete user.';
+        this.isLoading = false;
+      }
+    });
   }
 
   onCancelDelete(): void {
@@ -132,8 +168,18 @@ export class DashboardComponent implements OnInit {
   }
 
   onAddUser(user: RegisteredUser): void {
-    this.userStorage.saveUser(user);
-    this.registeredUsers = this.userStorage.getUsers();
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.userStorage.saveUser(user).subscribe({
+      next: () => {
+        this.loadUsers();
+      },
+      error: (err) => {
+        this.errorMessage = err.message || 'Failed to add user.';
+        this.isLoading = false;
+      }
+    });
   }
 
   onCancelAdd(): void {}
