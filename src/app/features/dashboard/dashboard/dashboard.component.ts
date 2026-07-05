@@ -1,5 +1,6 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 import { UserStorageService, RegisteredUser } from '../../../core/services/user-storage.service';
 import { AddUserModalComponent } from '../../../shared/add-user-modal/add-user-modal.component';
 import { setAuthenticated } from '../../../core/guards/auth.guard';
@@ -13,6 +14,7 @@ import { setAuthenticated } from '../../../core/guards/auth.guard';
 export class DashboardComponent implements OnInit {
   private router = inject(Router);
   private userStorage = inject(UserStorageService);
+  private cdr = inject(ChangeDetectorRef);
 
   @ViewChild('addUserModal') addUserModal!: AddUserModalComponent;
 
@@ -74,20 +76,24 @@ export class DashboardComponent implements OnInit {
   }
 
   private loadUsers(): void {
+    console.log('[Dashboard] loadUsers() called');
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.userStorage.getUsers().subscribe({
+    this.userStorage.getUsers().pipe(
+      finalize(() => {
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      })
+    ).subscribe({
       next: (users) => {
         this.registeredUsers = users;
         if (users.length > 0) {
           this.userName = users[users.length - 1].fullName;
         }
-        this.isLoading = false;
       },
       error: (err) => {
-        this.errorMessage = err.message || 'Failed to load users.';
-        this.isLoading = false;
+        this.errorMessage = err.message || 'Failed to load users. Is json-server running on port 3000?';
       }
     });
   }
@@ -117,18 +123,18 @@ export class DashboardComponent implements OnInit {
 
   onSaveEdit(updated: RegisteredUser): void {
     if (!this.editingUser?.id) return;
+    const id = this.editingUser.id;
+    this.editingUser = null;
 
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.userStorage.updateUser(this.editingUser.id, updated).subscribe({
-      next: () => {
-        this.editingUser = null;
-        this.loadUsers();
-      },
+    this.userStorage.updateUser(id, updated).pipe(
+      finalize(() => { this.isLoading = false; this.cdr.detectChanges(); })
+    ).subscribe({
+      next: () => this.loadUsers(),
       error: (err) => {
         this.errorMessage = err.message || 'Failed to update user.';
-        this.isLoading = false;
       }
     });
   }
@@ -143,18 +149,18 @@ export class DashboardComponent implements OnInit {
 
   onConfirmDelete(): void {
     if (!this.pendingDeleteUser?.id) return;
+    const id = this.pendingDeleteUser.id;
+    this.pendingDeleteUser = null;
 
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.userStorage.deleteUser(this.pendingDeleteUser.id).subscribe({
-      next: () => {
-        this.pendingDeleteUser = null;
-        this.loadUsers();
-      },
+    this.userStorage.deleteUser(id).pipe(
+      finalize(() => { this.isLoading = false; this.cdr.detectChanges(); })
+    ).subscribe({
+      next: () => this.loadUsers(),
       error: (err) => {
         this.errorMessage = err.message || 'Failed to delete user.';
-        this.isLoading = false;
       }
     });
   }
@@ -173,13 +179,12 @@ export class DashboardComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.userStorage.saveUser(user).subscribe({
-      next: () => {
-        this.loadUsers();
-      },
+    this.userStorage.saveUser(user).pipe(
+      finalize(() => { this.isLoading = false; this.cdr.detectChanges(); })
+    ).subscribe({
+      next: () => this.loadUsers(),
       error: (err) => {
         this.errorMessage = err.message || 'Failed to add user.';
-        this.isLoading = false;
       }
     });
   }

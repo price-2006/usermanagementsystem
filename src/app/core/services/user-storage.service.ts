@@ -17,7 +17,7 @@ export interface RegisteredUser {
   providedIn: 'root'
 })
 export class UserStorageService {
-  private readonly apiUrl = 'http://localhost:3000/users';
+  private readonly apiUrl = '/users';
   private http = inject(HttpClient);
 
   /** GET /users */
