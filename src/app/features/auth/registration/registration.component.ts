@@ -38,6 +38,7 @@ export class RegistrationComponent {
 
   protected successMessage = '';
   protected errorMessage = '';
+  protected isLoading = false;
 
   protected submit(): void {
     this.successMessage = '';
@@ -59,9 +60,19 @@ export class RegistrationComponent {
       address: formValue.address ?? ''
     };
 
-    this.userStorage.saveUser(user);
-    this.successMessage = 'User registered successfully.';
-    this.registrationForm.reset();
+    this.isLoading = true;
+
+    this.userStorage.saveUser(user).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.successMessage = 'User registered successfully.';
+        this.registrationForm.reset();
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.errorMessage = err.message || 'Could not reach the server. Please try again.';
+      }
+    });
   }
 
   protected hasError(controlName: string, errorName: string): boolean {

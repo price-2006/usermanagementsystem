@@ -1,7 +1,9 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 import { UserStorageService, RegisteredUser } from '../../../core/services/user-storage.service';
 import { AddUserModalComponent } from '../../../shared/add-user-modal/add-user-modal.component';
+import { setAuthenticated } from '../../../core/guards/auth.guard';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,6 +14,7 @@ import { AddUserModalComponent } from '../../../shared/add-user-modal/add-user-m
 export class DashboardComponent implements OnInit {
   private router = inject(Router);
   private userStorage = inject(UserStorageService);
+  private cdr = inject(ChangeDetectorRef);
 
   @ViewChild('addUserModal') addUserModal!: AddUserModalComponent;
 
@@ -19,12 +22,16 @@ export class DashboardComponent implements OnInit {
   activeMenu: 'dashboard' | 'users' = 'dashboard';
   registeredUsers: RegisteredUser[] = [];
 
+  // Loading & Error
+  isLoading = false;
+  errorMessage = '';
+
   // Search
   private _searchQuery = '';
   get searchQuery(): string { return this._searchQuery; }
   set searchQuery(value: string) {
     this._searchQuery = value;
-    this.currentPage = 1; // reset to first page on every search
+    this.currentPage = 1;
   }
 
   // Pagination
@@ -65,10 +72,30 @@ export class DashboardComponent implements OnInit {
   // ── Lifecycle ─────────────────────────────────────────────────────────────
 
   ngOnInit(): void {
-    this.registeredUsers = this.userStorage.getUsers();
-    if (this.registeredUsers.length > 0) {
-      this.userName = this.registeredUsers[this.registeredUsers.length - 1].fullName;
-    }
+    this.loadUsers();
+  }
+
+  private loadUsers(): void {
+    console.log('[Dashboard] loadUsers() called');
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.userStorage.getUsers().pipe(
+      finalize(() => {
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      })
+    ).subscribe({
+      next: (users) => {
+        this.registeredUsers = users;
+        if (users.length > 0) {
+          this.userName = users[users.length - 1].fullName;
+        }
+      },
+      error: (err) => {
+        this.errorMessage = err.message || 'Failed to load users. Is json-server running on port 3000?';
+      }
+    });
   }
 
   // ── Navigation ────────────────────────────────────────────────────────────
@@ -78,10 +105,7 @@ export class DashboardComponent implements OnInit {
   }
 
   logout(): void {
-    if (typeof window !== 'undefined') {
-      window.localStorage.removeItem('isLoggedIn');
-      window.localStorage.removeItem('currentUser');
-    }
+    setAuthenticated(false);
     this.router.navigate(['/login']);
   }
 
@@ -98,11 +122,21 @@ export class DashboardComponent implements OnInit {
   }
 
   onSaveEdit(updated: RegisteredUser): void {
-    if (this.editingUser) {
-      this.userStorage.updateUser(this.editingUser.email, updated);
-      this.editingUser = null;
-      this.registeredUsers = this.userStorage.getUsers();
-    }
+    if (!this.editingUser?.id) return;
+    const id = this.editingUser.id;
+    this.editingUser = null;
+
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.userStorage.updateUser(id, updated).pipe(
+      finalize(() => { this.isLoading = false; this.cdr.detectChanges(); })
+    ).subscribe({
+      next: () => this.loadUsers(),
+      error: (err) => {
+        this.errorMessage = err.message || 'Failed to update user.';
+      }
+    });
   }
 
   onCancelEdit(): void {
@@ -114,11 +148,21 @@ export class DashboardComponent implements OnInit {
   }
 
   onConfirmDelete(): void {
-    if (this.pendingDeleteUser) {
-      this.userStorage.deleteUser(this.pendingDeleteUser.email);
-      this.registeredUsers = this.userStorage.getUsers();
-      this.pendingDeleteUser = null;
-    }
+    if (!this.pendingDeleteUser?.id) return;
+    const id = this.pendingDeleteUser.id;
+    this.pendingDeleteUser = null;
+
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.userStorage.deleteUser(id).pipe(
+      finalize(() => { this.isLoading = false; this.cdr.detectChanges(); })
+    ).subscribe({
+      next: () => this.loadUsers(),
+      error: (err) => {
+        this.errorMessage = err.message || 'Failed to delete user.';
+      }
+    });
   }
 
   onCancelDelete(): void {
@@ -132,8 +176,17 @@ export class DashboardComponent implements OnInit {
   }
 
   onAddUser(user: RegisteredUser): void {
-    this.userStorage.saveUser(user);
-    this.registeredUsers = this.userStorage.getUsers();
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.userStorage.saveUser(user).pipe(
+      finalize(() => { this.isLoading = false; this.cdr.detectChanges(); })
+    ).subscribe({
+      next: () => this.loadUsers(),
+      error: (err) => {
+        this.errorMessage = err.message || 'Failed to add user.';
+      }
+    });
   }
 
   onCancelAdd(): void {}

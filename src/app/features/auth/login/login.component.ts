@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserStorageService } from '../../../core/services/user-storage.service';
+import { setAuthenticated } from '../../../core/guards/auth.guard';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,7 @@ export class LoginComponent {
 
   protected errorMessage = '';
   protected successMessage = '';
+  protected isLoading = false;
 
   protected submit(): void {
     this.errorMessage = '';
@@ -36,19 +38,27 @@ export class LoginComponent {
     const email = formValue.email ?? '';
     const password = formValue.password ?? '';
 
-    const users = this.userStorage.getUsers();
-    const user = users.find(u => u.email === email && u.password === password);
+    this.isLoading = true;
 
-    if (user) {
-      window.localStorage.setItem('currentUser', JSON.stringify(user));
-      window.localStorage.setItem('isLoggedIn', 'true');
-      this.successMessage = 'Login successful! Redirecting...';
-      setTimeout(() => {
-        this.router.navigate(['/dashboard']);
-      }, 500);
-    } else {
-      this.errorMessage = 'Invalid email or password.';
-    }
+    this.userStorage.getUsers().subscribe({
+      next: (users) => {
+        this.isLoading = false;
+        const user = users.find(u => u.email === email && u.password === password);
+        if (user) {
+          setAuthenticated(true);
+          this.successMessage = 'Login successful! Redirecting...';
+          setTimeout(() => {
+            this.router.navigate(['/dashboard']);
+          }, 500);
+        } else {
+          this.errorMessage = 'Invalid email or password.';
+        }
+      },
+      error: () => {
+        this.isLoading = false;
+        this.errorMessage = 'Could not reach the server. Please try again.';
+      }
+    });
   }
 
   protected hasError(controlName: string, errorName: string): boolean {

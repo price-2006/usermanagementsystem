@@ -1,0 +1,23 @@
+{
+  "users": [
+    {
+      "fullName": "Test Name",
+      "email": "testemail@email.com",
+      "mobile": "1234567890",
+      "password": "testpass",
+      "gender": "Male",
+      "address": "ddd",
+      "id": "k6lyX-tMAaQ"
+    },
+    {
+      "fullName": "Test User",
+      "email": "test@example.com",
+      "mobile": "1234567890",
+      "password": "Password123",
+      "gender": "Male",
+      "address": "Test Address",
+      "id": "3p1zd0qrKJM"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
